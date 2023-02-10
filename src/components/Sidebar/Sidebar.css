@@ -1,0 +1,15 @@
+.sidebar {
+  background: blue;
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+li {
+  list-style: none;
+}
+
+li:hover {
+  cursor: pointer;
+}

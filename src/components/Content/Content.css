@@ -1,0 +1,12 @@
+.content {
+  background: green;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
