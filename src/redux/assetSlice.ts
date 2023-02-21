@@ -35,10 +35,10 @@ const initialState: AssetState = {
 
 export const createNewBuilding = createAsyncThunk(
   "asset/createNewBuilding",
-  async (_, thunkApi) => {
+  async () => {
     try {
-      createBuilding();
-      thunkApi.dispatch(getBuildingAssets);
+      const createdBuilding = await createBuilding();
+      return createdBuilding._id;
     } catch (error) {
       console.log(error);
       throw error;
@@ -92,6 +92,9 @@ export const assetSlice = createSlice({
     setActiveAssetType: (state, action: PayloadAction<Asset>) => {
       state.activeAssetType = action.payload;
     },
+    setActiveAssetId: (state, action: PayloadAction<string>) => {
+      state.activeAssetId = action.payload;
+    },
     setActiveAssetById: (state, action: PayloadAction<string>) => {
       state.activeAsset = state.assets[state.activeAssetType].find(
         (val) => val._id === action.payload
@@ -112,6 +115,7 @@ export const assetSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setActiveAssetType, setActiveAssetById } = assetSlice.actions;
+export const { setActiveAssetType, setActiveAssetById, setActiveAssetId } =
+  assetSlice.actions;
 
 export default assetSlice.reducer;

@@ -16,7 +16,7 @@ export const createBuilding = async () => {
     .then((response) => response.json())
     .then((createdBuilding) => createdBuilding)
     .catch((err) => console.error(err));
-  return response.buildingData;
+  return response.newBuilding;
 };
 
 export const getAllBuildings = async () => {

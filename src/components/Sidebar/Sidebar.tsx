@@ -1,5 +1,9 @@
 import { useEffect } from "react";
-import { createNewBuilding, setActiveAssetById } from "../../redux/assetSlice";
+import {
+  createNewBuilding,
+  getBuildingAssets,
+  setActiveAssetId,
+} from "../../redux/assetSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import "./Sidebar.css";
 
@@ -9,14 +13,24 @@ export const Sidebar = () => {
     (state) => state.asset.activeAssetType
   );
   const assets = useAppSelector((state) => state.asset.assets[activeAssetType]);
+  const activeAssetId = useAppSelector((state) => state.asset.activeAssetId);
 
   useEffect(() => {
-    if (assets && assets.length > 0)
-      dispatch(setActiveAssetById(assets[0]._id));
+    if (assets && assets.length > 0) {
+      dispatch(setActiveAssetId(assets[assets.length - 1]._id));
+    }
   }, [dispatch, assets]);
 
-  const handleCreateNewAsset = () => {
-    dispatch(createNewBuilding());
+  useEffect(() => {});
+
+  const handleCreateNewAsset = async () => {
+    const createdId = await dispatch(createNewBuilding()).unwrap();
+    await dispatch(getBuildingAssets());
+    dispatch(setActiveAssetId(createdId));
+  };
+
+  const handleAssetClick = (id: string) => {
+    dispatch(setActiveAssetId(id));
   };
 
   return (
@@ -25,7 +39,10 @@ export const Sidebar = () => {
         {assets?.map((asset) => (
           <li
             key={asset._id}
-            onClick={() => dispatch(setActiveAssetById(asset._id))}
+            onClick={() => handleAssetClick(asset._id)}
+            style={{
+              outline: asset._id === activeAssetId ? "solid red 2px" : "",
+            }}
           >
             {asset.name}
           </li>
