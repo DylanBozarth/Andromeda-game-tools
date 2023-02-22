@@ -6,11 +6,13 @@ export const createBuilding = async () => {
     headers: {
       "Content-Type": "application/json",
     },
+    //TODO: This should be dynamic if possible
     body: JSON.stringify({
       name: "defaultName",
       description: "defaultDesc",
       imageSrc: "defaultImgSrc",
       cost: 1,
+      techLevel: 0,
     }),
   })
     .then((response) => response.json())
