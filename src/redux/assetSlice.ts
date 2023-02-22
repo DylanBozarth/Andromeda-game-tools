@@ -23,14 +23,14 @@ export interface AssetState {
   assets: Record<Asset, Array<BuildingAsset>>;
   activeAssetType: Asset;
   activeAssetId: string | null;
-  activeAsset: any;
+  activeAsset: null | BuildingAsset;
 }
 
 const initialState: AssetState = {
   assets: {} as Record<Asset, Array<BuildingAsset>>,
   activeAssetType: Asset.Buildings,
   activeAssetId: null,
-  activeAsset: {} as any,
+  activeAsset: null,
 };
 
 export const createNewBuilding = createAsyncThunk(
@@ -92,13 +92,19 @@ export const assetSlice = createSlice({
     setActiveAssetType: (state, action: PayloadAction<Asset>) => {
       state.activeAssetType = action.payload;
     },
-    setActiveAssetId: (state, action: PayloadAction<string>) => {
+    setActiveAssetId: (state, action: PayloadAction<string | null>) => {
       state.activeAssetId = action.payload;
     },
-    setActiveAssetById: (state, action: PayloadAction<string>) => {
-      state.activeAsset = state.assets[state.activeAssetType].find(
-        (val) => val._id === action.payload
-      );
+    setActiveAssetById: (state, action: PayloadAction<string | null>) => {
+      if (action.payload) {
+        state.activeAsset =
+          state.assets[state.activeAssetType].find(
+            (val) => val._id === action.payload
+          ) ?? null;
+      }
+    },
+    nullifyActiveAsset: (state) => {
+      state.activeAsset = null;
     },
   },
   extraReducers: (builder) => {
@@ -115,7 +121,11 @@ export const assetSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setActiveAssetType, setActiveAssetById, setActiveAssetId } =
-  assetSlice.actions;
+export const {
+  setActiveAssetType,
+  setActiveAssetById,
+  setActiveAssetId,
+  nullifyActiveAsset,
+} = assetSlice.actions;
 
 export default assetSlice.reducer;
