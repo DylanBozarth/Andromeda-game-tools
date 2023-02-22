@@ -49,26 +49,38 @@ export const Content = () => {
   return (
     <>
       {activeAsset && formData && (
-        <form onSubmit={handleSubmit}>
-          {Object.entries(formData).map(
-            ([key, value]) =>
-              key !== "_id" &&
-              key !== "__v" && (
-                <div key={key}>
-                  <label htmlFor={key}>{key}:</label>
-                  <input
-                    type={typeof value === "number" ? "number" : "text"}
-                    id={key}
-                    name={key}
-                    value={value}
-                    onChange={handleChange}
-                  />
-                </div>
-              )
-          )}
-          <button type="submit">Save</button>
-          <button onClick={() => handleDelete(formData._id)}>DELETE</button>
-        </form>
+        <div className="form-container">
+          <form onSubmit={handleSubmit}>
+            {Object.entries(formData).map(
+              ([key, value]) =>
+                key !== "_id" &&
+                key !== "__v" && (
+                  <div key={key} className="form-group">
+                    <label htmlFor={key} className="form-label">
+                      {key}:
+                    </label>
+                    <input
+                      className="form-input"
+                      type={typeof value === "number" ? "number" : "text"}
+                      id={key}
+                      name={key}
+                      value={value}
+                      onChange={handleChange}
+                    />
+                  </div>
+                )
+            )}
+            <button className="form-button" type="submit">
+              Save
+            </button>
+            <button
+              className="form-button"
+              onClick={() => handleDelete(formData._id)}
+            >
+              DELETE
+            </button>
+          </form>
+        </div>
       )}
     </>
   );
